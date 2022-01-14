@@ -1,6 +1,7 @@
 from flask import Flask, render_template, url_for, request, Response
 from gpiozero import Motor
 import RPi.GPIO as GPIO
+import os
 
 class Motor:
     def __init__(self):
@@ -71,6 +72,8 @@ def forward():
         control.forward()
         moving = True
         return "200"
+    else:
+        return "401"
 
 @app.route('/backward', methods=['GET', 'POST'])
 def backward():
@@ -81,6 +84,8 @@ def backward():
         control.backward()
         moving = True
         return "200"
+    else:
+        return "401"
 
 @app.route('/left', methods=['GET', 'POST'])
 def left():
@@ -91,6 +96,8 @@ def left():
         control.left()
         moving = True
         return "200"
+    else:
+        return "401"
 
 @app.route('/right', methods=['GET', 'POST'])
 def right():
@@ -101,6 +108,8 @@ def right():
         control.right()
         moving = True
         return "200"
+    else:
+        return "401"
 
 @app.route("/release", methods=['GET', 'POST'])
 def stop():
@@ -110,14 +119,18 @@ def stop():
             control.stop()
             moving = False
         return "200"
+    else:
+        return "401"
 
-# @app.route("/auth", methods=['GET','POST'])
-# def checkAuth():
-#     if request.args.get('pass') == open("password.txt", "r").read():
-#         authenticated = True
-#         return "True"
-#     else:
-#         return "False"
+@app.route("/auth", methods=['GET','POST'])
+def checkAuth():
+    print(request.form)
+    if request.form["password"] == os.environ.get('PASSWORD'):
+        global authenticated
+        authenticated = True
+        return "True"
+    else:
+        return "False"
 
 if __name__ == "__main__":
   app.run(debug=True, host="0.0.0.0")

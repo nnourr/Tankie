@@ -11,18 +11,11 @@
 </head>
 
 <body>
-    <!-- <div class="tankie">
-        <button>right</button>
-        <button>left</button>
-        <button>forward</button>
-        <button>backpenchd</button> 
-    </div>!-->
-
     <div class="top-container">
         <div class="title">Welcome To TANK1E
             <div class="subtitle">A WiFi Controlled Raspberry Pi tank</div>
         </div>
-        <div class="box-container hidden">
+        <div class="box-container hidden" id="box-container">
             <div class="box invis"></div>
             <div class="box" id="w-key">w</div>
             <div class="box invis"></div>
@@ -30,19 +23,20 @@
             <div class="box" id="s-key">s</div>
             <div class="box" id="d-key">d</div>
         </div>
-        <img src="http://192.168.0.68:8000/" hidden class="stream-display">
+        <img src="http://192.168.0.68:8000/" hidden class="stream-display" id="stream-display">
 
-        <div class="password-entry-container">
-            <div class="password-entry-title">Please Enter The Password:</div>
-            <input type="text" class="password-entry-box">
-            <div class="password-submit-button" id="password-submit-button">submit</div>
+        <div class="password-entry-container" id="password-entry-container">
+            <div class="password-entry-title subtitle">Enter The Password To Control Tank1e:</div>
+            <input type="text" class="password-entry-box" id="password-entry-box">
+            <div class="password-submit-button" id="password-submit-button">SUBMIT</div>
         </div>
+        <video class="demo-video stream-display" id="demo-video" autoplay muted loop><source src="/static/tank1eVid.mp4" type="video/mp4"></video>
     </div>
 
     <div class="about-us-container">
         <div class="about-pi-info-container">
-            <div class="about-us-subtitle subtitle">About Tankie</div>
-            <div class="about-us-info">HI I'm Tankie! From my memory I can tell that I'm a raspberryPi 4 based car programmed using python. Flask and Ajax Requests allow me to be controled over the internet through this website. Shoot me an email (link to contact section) to get
+            <div class="about-us-subtitle subtitle">About Tank1e</div>
+            <div class="about-us-info">HI I'm Tank1e! From my memory I can tell that I'm a raspberryPi 4 based car programmed using python. Flask and Ajax Requests allow me to be controled over the internet through this website. Shoot me an email (link to contact section) to get
                 a view into my life through my 1080p sensor!</div>
         </div>
         <div class="photo-container">
@@ -201,7 +195,7 @@
         })
 
         function stop(key) {
-            if (buttonDown == true) {
+            if (buttonDown === true) {
                 $.get("/release");
                 buttonDown = false;
                 document.getElementById(key + "-key").style.backgroundColor = null
@@ -271,7 +265,7 @@
                 y.target.classList.add("active")
                 currentlyActive = 4 - (y.target.id)
 
-                if (currentlyActive == 3) {
+                if (currentlyActive === 3) {
                     document.getElementById("github").style.display = "none"
                 } else {
                     document.getElementById("github").style.display = "block"
@@ -292,8 +286,7 @@
         })
 
         function goToLink(index) {
-            console.log("ayo" + index);
-            if (index == 4) {
+            if (index === 4) {
                 location.href = 'mailto:' + individualInfo[currentlyActive][index];
             } else {
                 window.open(individualInfo[currentlyActive][index], '_blank');
@@ -303,6 +296,50 @@
         var galleryImage = Array.from(document.getElementsByClassName("gallery-image"))
         galleryImage.map((x) => {
             x.style.backgroundImage = "url('/static/piphoto" + x.id + ".jpg'"
+        })
+
+        var submitButton = document.getElementById("password-submit-button")
+        submitButton.addEventListener("click", function(btn) {
+            checkPass()
+        })
+        var passwordBox = document.getElementById("password-entry-box")
+        passwordBox.addEventListener("keyup", function(btn) {
+            if (event.code === 'Enter') {
+                checkPass()
+                passwordBox.value = ""
+            }
+        })
+
+        var passwordConainer = document.getElementById("password-entry-container")
+        var streamDisplay = document.getElementById("stream-display")
+        var controls = document.getElementById("box-container")
+
+        function checkPass() {
+            $.post("/auth", {
+                    password: passwordBox.value
+                },
+                function(result) {
+                    if (result == "True") {
+                        video.classList.add("hidden")
+                        video.pause()
+                        passwordConainer.classList.add("hidden")
+                        streamDisplay.classList.remove("hidden")
+                        controls.classList.remove("hidden")
+
+                    } else {
+                        console.log("oh no")
+                    }
+                })
+        }
+
+        var video = document.getElementById("demo-video")
+        video.volume = 0.7
+        video.addEventListener("click", function(x) {
+            if (video.muted === false) {
+                video.muted = true
+            } else {
+                video.muted = false
+            }
         })
     </script>
 </body>

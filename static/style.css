@@ -54,6 +54,7 @@ body {
     height: 260px;
     align-content: center;
     justify-content: center;
+    margin: auto 0;
 }
 
 .box {

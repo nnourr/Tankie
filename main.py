@@ -124,7 +124,6 @@ def stop():
 
 @app.route("/auth", methods=['GET','POST'])
 def checkAuth():
-    print(request.form)
     if request.form["password"] == os.environ.get('PASSWORD'):
         global authenticated
         authenticated = True

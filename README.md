@@ -13,5 +13,5 @@ Created using the engineering design process, we used bits and pieces of differe
 
 ## Problems faced:
 In particular our camera broke in the installation process and when doing so we had to reallign our plan in order to work around shippin days. with this our focus shifted towards the website until the new camera was delivered. 
-through this project we took to combing our skill to create and more importantly learn about the many differrent aspects to coding. with this project we gained knowledge on serveral integal parts of our coding careers. gaining information from things such as setting up a website on its own host server to video editing. another focal one would be working ina team and how to uild upon eachother strength to collaborate and be effective in our production 
+through this project we took to combing our skill to create and more importantly learn about the many differrent aspects to coding. with this project we gained knowledge on serveral integal parts of our coding careers. gaining information from things such as setting up a website on its own host server to video editing. another focal one would be working ina team and how to uild upon eachother strength to collaborate and be effective in our production.
 
